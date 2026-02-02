@@ -150,12 +150,37 @@
       from { transform: scale(.96); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
     }
+
+    .music-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 214, 231, 0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+    }
+    .music-overlay.hidden {
+      display: none;
+    }
+    .music-overlay p {
+      font-size: clamp(18px, 4vw, 24px);
+      font-weight: 600;
+      color: #ff1f68;
+      text-align: center;
+      padding: 24px;
+    }
   </style>
 </head>
 
 <body>
+  <div class="music-overlay" id="musicOverlay">
+    <p>Tap anywhere to start 🎵</p>
+  </div>
   <canvas id="confettiCanvas"></canvas>
-  <audio id="bgMusic" loop>
+  <audio id="bgMusic" loop preload="auto">
     <source src="With You - AP Dhillon.mp3" type="audio/mpeg" />
   </audio>
 
@@ -186,14 +211,19 @@
     const noBtn = document.getElementById("noBtn");
     const result = document.getElementById("result");
     const bgMusic = document.getElementById("bgMusic");
+    const musicOverlay = document.getElementById("musicOverlay");
 
     /* ---------- BACKGROUND MUSIC ---------- */
     function startMusic() {
-      bgMusic.play().catch(() => {});
+      bgMusic.volume = 0.7;
+      bgMusic.play().then(() => {
+        musicOverlay.classList.add("hidden");
+      }).catch(() => {
+        musicOverlay.querySelector("p").textContent = "Tap to enable music 🎵";
+      });
     }
-    startMusic();
-    document.addEventListener("click", startMusic, { once: true });
-    document.addEventListener("touchstart", startMusic, { once: true });
+    musicOverlay.addEventListener("click", startMusic);
+    musicOverlay.addEventListener("touchstart", startMusic, { passive: true });
 
     /* ---------- CONFETTI ---------- */
     const confettiCanvas = document.getElementById("confettiCanvas");
