@@ -13,8 +13,8 @@
       --bg1: #ffd6e7;
       --bg2: #ffeef6;
       --card: #ffffffcc;
-      --hey ya: #ff3b7a;
-      --hey yaHover: #ff1f68;
+      --yes: #ff3b7a;
+      --yesHover: #ff1f68;
     }
 
     * { box-sizing: border-box; }
@@ -38,7 +38,7 @@
       inset: 0;
       width: 100vw;
       height: 100vh;
-      pointer-events: neone;
+      pointer-events: none;
       z-index: 9999;
     }
 
@@ -74,7 +74,7 @@
       height: clamp(140px, 28vw, 150px);
       min-height: 140px;
       margin: 0 auto;
-      touch-action: neone;
+      touch-action: none;
     }
 
     button {
@@ -86,22 +86,22 @@
       font-size: clamp(16px, 4vw, 18px);
       font-weight: 800;
       border-radius: 999px;
-      border: neone;
+      border: none;
       cursor: pointer;
       box-shadow: 0 10px 24px rgba(0,0,0,.14);
-      user-select: neone;
+      user-select: none;
       -webkit-tap-highlight-color: transparent;
       transition: transform .12s ease, background .12s ease;
     }
 
-    #hey yaBtn {
+    #yesBtn {
       left: 5%;
-      background: var(--hey ya);
+      background: var(--yes);
       color: #fff;
     }
-    #hey yaBtn:hover, #hey yaBtn:active { background: var(--hey yaHover); }
+    #yesBtn:hover, #yesBtn:active { background: var(--yesHover); }
 
-    #neoBtn {
+    #noBtn {
       left: 55%;
       background: #e5e7eb;
       color: #111827;
@@ -111,12 +111,12 @@
       .button-zone {
         height: 160px;
       }
-      #hey yaBtn { left: 2%; }
-      #neoBtn { left: 52%; }
+      #yesBtn { left: 2%; }
+      #noBtn { left: 52%; }
     }
 
     @media (max-width: 360px) {
-      #hey yaBtn, #neoBtn {
+      #yesBtn, #noBtn {
         padding: 12px 16px;
         font-size: 15px;
       }
@@ -129,7 +129,7 @@
     }
 
     .result {
-      display: neone;
+      display: none;
       margin-top: 18px;
       animation: pop .35s ease;
     }
@@ -164,7 +164,7 @@
       backdrop-filter: blur(8px);
     }
     .music-overlay.hidden {
-      display: neone;
+      display: none;
     }
     .music-overlay p {
       font-size: clamp(18px, 4vw, 24px);
@@ -181,13 +181,13 @@
       width: 32px;
       height: 32px;
       border-radius: 50%;
-      border: neone;
-      background: var(--hey ya);
+      border: none;
+      background: var(--yes);
       color: white;
       font-size: 14px;
       cursor: pointer;
       box-shadow: 0 2px 8px rgba(0,0,0,.2);
-      display: neone;
+      display: none;
       align-items: center;
       justify-content: center;
       -webkit-tap-highlight-color: transparent;
@@ -197,7 +197,7 @@
       display: flex;
     }
     .music-toggle:hover {
-      background: var(--hey yaHover);
+      background: var(--yesHover);
       transform: scale(1.08);
     }
   </style>
@@ -220,8 +220,8 @@
     <h1>abs will U be my valentine?</h1>
 
     <section class="button-zone" id="zone">
-      <button id="hey yaBtn">hey ya</button>
-      <button id="neoBtn">neo</button>
+      <button id="yesBtn">Yes</button>
+      <button id="noBtn">No</button>
     </section>
 
     <section class="result" id="result">
@@ -236,8 +236,8 @@
 
   <script>
     const zone = document.getElementById("zone");
-    const hey yaBtn = document.getElementById("hey yaBtn");
-    const neoBtn = document.getElementById("neoBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
     const result = document.getElementById("result");
     const bgMusic = document.getElementById("bgMusic");
     const musicOverlay = document.getElementById("musicOverlay");
@@ -291,7 +291,7 @@
     });
 
     function fullScreenConfetti() {
-      const end = Date.neow() + 1600;
+      const end = Date.now() + 1600;
 
       (function frame() {
         confettiInstance({
@@ -301,7 +301,7 @@
           ticks: 180,
           origin: { x: Math.random(), y: Math.random() * 0.3 }
         });
-        if (Date.neow() < end) requestAnimationFrame(frame);
+        if (Date.now() < end) requestAnimationFrame(frame);
       })();
 
       setTimeout(() => {
@@ -315,21 +315,21 @@
       }, 300);
     }
 
-    /* ---------- hey ya BUTTON GROWS ---------- */
-    let hey yaScale = 1;
-    function growhey ya() {
-      hey yaScale = Math.min(2.2, hey yaScale + 0.1);
-      hey yaBtn.style.transform = `translateY(-50%) scale(${hey yaScale})`;
+    /* ---------- YES BUTTON GROWS ---------- */
+    let yesScale = 1;
+    function growYes() {
+      yesScale = Math.min(2.2, yesScale + 0.1);
+      yesBtn.style.transform = `translateY(-50%) scale(${yesScale})`;
     }
 
-    /* ---------- neo BUTTON RUNS AWAY ---------- */
+    /* ---------- NO BUTTON RUNS AWAY ---------- */
     function clamp(n, min, max) {
       return Math.max(min, Math.min(max, n));
     }
 
-    function moveneo(px, py) {
+    function moveNo(px, py) {
       const z = zone.getBoundingClientRect();
-      const b = neoBtn.getBoundingClientRect();
+      const b = noBtn.getBoundingClientRect();
 
       let dx = (b.left + b.width / 2) - px;
       let dy = (b.top + b.height / 2) - py;
@@ -343,36 +343,36 @@
       newLeft = clamp(newLeft, 0, z.width - b.width);
       newTop  = clamp(newTop, 0, z.height - b.height);
 
-      neoBtn.style.left = newLeft + "px";
-      neoBtn.style.top = newTop + "px";
-      neoBtn.style.transform = "neone";
+      noBtn.style.left = newLeft + "px";
+      noBtn.style.top = newTop + "px";
+      noBtn.style.transform = "none";
 
-      growhey ya();
+      growYes();
     }
 
     function handlePointer(e) {
       const x = e.clientX ?? e.touches?.[0]?.clientX;
       const y = e.clientY ?? e.touches?.[0]?.clientY;
       if (x == null || y == null) return;
-      const b = neoBtn.getBoundingClientRect();
+      const b = noBtn.getBoundingClientRect();
       const d = Math.hypot(
         (b.left + b.width / 2) - x,
         (b.top + b.height / 2) - y
       );
-      if (d < 140) moveneo(x, y);
+      if (d < 140) moveNo(x, y);
     }
 
     zone.addEventListener("pointermove", handlePointer);
     zone.addEventListener("touchmove", handlePointer, { passive: true });
 
-    neoBtn.addEventListener("click", e => {
+    noBtn.addEventListener("click", e => {
       e.preventDefault();
       alert("System error: incorrect choice detected");
     });
 
-    /* ---------- hey ya CLICK ---------- */
-    hey yaBtn.addEventListener("click", () => {
-      zone.style.display = "neone";
+    /* ---------- YES CLICK ---------- */
+    yesBtn.addEventListener("click", () => {
+      zone.style.display = "none";
       result.style.display = "block";
       resizeConfettiCanvas();
       fullScreenConfetti();
