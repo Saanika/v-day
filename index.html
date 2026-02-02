@@ -43,6 +43,7 @@
     }
 
     .card {
+      position: relative;
       width: min(720px, 92vw);
       padding: clamp(16px, 4vw, 26px) clamp(16px, 3vw, 22px);
       background: var(--card);
@@ -177,16 +178,15 @@
       position: fixed;
       bottom: max(16px, env(safe-area-inset-bottom));
       right: max(16px, env(safe-area-inset-right));
-      width: 48px;
-      height: 48px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       border: none;
       background: var(--yes);
       color: white;
-      font-size: 20px;
+      font-size: 14px;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,.2);
-      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0,0,0,.2);
       display: none;
       align-items: center;
       justify-content: center;
@@ -198,7 +198,7 @@
     }
     .music-toggle:hover {
       background: var(--yesHover);
-      transform: scale(1.05);
+      transform: scale(1.08);
     }
   </style>
 </head>
