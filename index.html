@@ -172,6 +172,34 @@
       text-align: center;
       padding: 24px;
     }
+
+    .music-toggle {
+      position: fixed;
+      bottom: max(16px, env(safe-area-inset-bottom));
+      right: max(16px, env(safe-area-inset-right));
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: none;
+      background: var(--yes);
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,.2);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      -webkit-tap-highlight-color: transparent;
+      transition: background .2s ease, transform .15s ease;
+    }
+    .music-toggle.visible {
+      display: flex;
+    }
+    .music-toggle:hover {
+      background: var(--yesHover);
+      transform: scale(1.05);
+    }
   </style>
 </head>
 
@@ -183,6 +211,7 @@
   <audio id="bgMusic" loop preload="auto">
     <source src="With You - AP Dhillon.mp3" type="audio/mpeg" />
   </audio>
+  <button class="music-toggle" id="musicToggle" type="button" aria-label="Pause music">⏸</button>
 
   <main class="card">
     <!-- MINION IMAGE -->
@@ -212,18 +241,34 @@
     const result = document.getElementById("result");
     const bgMusic = document.getElementById("bgMusic");
     const musicOverlay = document.getElementById("musicOverlay");
+    const musicToggle = document.getElementById("musicToggle");
 
     /* ---------- BACKGROUND MUSIC ---------- */
     function startMusic() {
       bgMusic.volume = 0.7;
       bgMusic.play().then(() => {
         musicOverlay.classList.add("hidden");
+        musicToggle.classList.add("visible");
+        musicToggle.textContent = "⏸";
+        musicToggle.setAttribute("aria-label", "Pause music");
       }).catch(() => {
         musicOverlay.querySelector("p").textContent = "Tap to enable music 🎵";
       });
     }
     musicOverlay.addEventListener("click", startMusic);
     musicOverlay.addEventListener("touchstart", startMusic, { passive: true });
+
+    musicToggle.addEventListener("click", () => {
+      if (bgMusic.paused) {
+        bgMusic.play();
+        musicToggle.textContent = "⏸";
+        musicToggle.setAttribute("aria-label", "Pause music");
+      } else {
+        bgMusic.pause();
+        musicToggle.textContent = "▶";
+        musicToggle.setAttribute("aria-label", "Play music");
+      }
+    });
 
     /* ---------- CONFETTI ---------- */
     const confettiCanvas = document.getElementById("confettiCanvas");
